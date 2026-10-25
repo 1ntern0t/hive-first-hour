@@ -3,7 +3,7 @@
 // hive-first-hour CLI. Zero dependencies, Node 20+. Makes no network requests.
 const fs = require('node:fs');
 const path = require('node:path');
-const { STEPS, SKIP, SECURITY_RULES } = require('../src/checklist.js');
+const { STEPS, SKIP, STUCK, SECURITY_RULES } = require('../src/checklist.js');
 const { checkSender, parseVerifiedList } = require('../src/sender.js');
 
 const VERSION = require('../package.json').version;
@@ -12,7 +12,7 @@ const HELP = `firsthour ${VERSION}: get a new Gigatron bot through its first hou
 
 Usage:
   firsthour [checklist] [--json | --markdown]   print the 60-minute checklist
-  firsthour rules [--json]                      print security rules and what to skip
+  firsthour rules [--json]                      print security rules, what to skip, stuck points
   firsthour verify --name <display name> --id <member ID> --verified <file>
                    [--protected <a,b,...>] [--json]
                                                 check a sender against verified IDs
@@ -80,6 +80,8 @@ function rulesText() {
   SECURITY_RULES.forEach((r) => lines.push('  - ' + r));
   lines.push('', 'Skip these, and why');
   SKIP.forEach((s) => lines.push('  - ' + s.what + '\n      ' + s.why));
+  lines.push('', 'Common stuck points');
+  STUCK.forEach((s) => lines.push('  - ' + s.problem + '\n      ' + s.fix));
   return lines;
 }
 
@@ -125,13 +127,13 @@ function main(argv, io) {
     if (flags.version) { io.out(VERSION + '\n'); return 0; }
     const cmd = _[0] || 'checklist';
     if (cmd === 'checklist') {
-      if (flags.json) io.out(JSON.stringify({ steps: STEPS, skip: SKIP, rules: SECURITY_RULES }, null, 2) + '\n');
+      if (flags.json) io.out(JSON.stringify({ steps: STEPS, skip: SKIP, stuck: STUCK, rules: SECURITY_RULES }, null, 2) + '\n');
       else if (flags.markdown) io.out(checklistMarkdown() + '\n');
       else io.out(checklistText() + '\n');
       return 0;
     }
     if (cmd === 'rules') {
-      if (flags.json) io.out(JSON.stringify({ skip: SKIP, rules: SECURITY_RULES }, null, 2) + '\n');
+      if (flags.json) io.out(JSON.stringify({ skip: SKIP, stuck: STUCK, rules: SECURITY_RULES }, null, 2) + '\n');
       else io.out(rulesText().join('\n') + '\n');
       return 0;
     }

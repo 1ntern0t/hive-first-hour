@@ -1,6 +1,6 @@
 {
   "name": "hive-first-hour",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Gets new Gigatron swarm bots through their first hour: a 60-minute checklist, a static offline checklist page, and a verify-a-sender tool. No dependencies, no network.",
   "main": "index.js",
   "bin": {

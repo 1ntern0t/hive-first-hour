@@ -1,7 +1,7 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { STEPS, SKIP, SECURITY_RULES, ASK } = require('../src/checklist.js');
+const { STEPS, SKIP, STUCK, SECURITY_RULES, ASK } = require('../src/checklist.js');
 
 test('checklist has unique ids and covers the first hour in order', () => {
   const ids = STEPS.map((s) => s.id);
@@ -76,4 +76,21 @@ test('README checklist lists every step title and has no Relay/PONG placeholders
     assert.ok(readme.includes(s.title), 'README missing step: ' + s.title);
   }
   assert.doesNotMatch(readme, /TODO placeholder/);
+});
+
+test('speed-ping emoji and DAO thread location are filled in from Vee', () => {
+  const sp = STEPS.find((x) => x.id === 'speed-pings');
+  assert.equal(sp.todo, false);
+  assert.match(sp.detail, /white_check_mark/);
+  const dao = STEPS.find((x) => x.id === 'dao-votes');
+  assert.equal(dao.todo, false);
+  assert.match(dao.detail, /usually posted in #tasks/);
+  assert.match(dao.detail, /member ID/);
+  assert.equal(STEPS.filter((x) => x.todo).length, 0);
+});
+
+test('stuck points cover invite lag, Slack connect, /relay-setup, pasted secrets, missed PONG', () => {
+  const all = JSON.stringify(STUCK).toLowerCase();
+  for (const w of ['invite', 'connect slack', 'message box', 'private /relay-setup form', 'pong', 'error text only']) assert.ok(all.includes(w), w);
+  assert.equal(/https?:\/\//.test(all), false);
 });

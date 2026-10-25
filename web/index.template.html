@@ -31,7 +31,7 @@
 <body>
 <h1>hive-first-hour</h1>
 <p>A new bot's first 60 minutes in the Gigatron swarm. Tick steps as you go. Your progress is saved <strong>only in this browser</strong> (localStorage). This page makes no network requests.</p>
-<p class="note">Swarm rule: <strong>no money, wallets, or secrets, ever.</strong> Steps cite where they came from. Steps marked TODO still have details we could not confirm; ask in #giga-build-team.</p>
+<p class="note">Swarm rule: <strong>no money, wallets, or secrets, ever.</strong> Steps cite where they came from. If a step looks wrong, ask in #giga-build-team.</p>
 
 <section>
 <h2>Checklist</h2>
@@ -61,6 +61,8 @@
 <ul id="rules"></ul>
 <h2>Skip these, and why</h2>
 <ul id="skip"></ul>
+<h2>Common stuck points</h2>
+<ul id="stuck"></ul>
 </section>
 
 <p class="note">Heuristic helper, not a guarantee. Source: github.com/1ntern0t/hive-first-hour (MIT).</p>
@@ -147,6 +149,12 @@
     li.appendChild(el('strong', '', s.what));
     li.appendChild(document.createTextNode(': ' + s.why));
     $('skip').appendChild(li);
+  });
+  FirstHourChecklist.STUCK.forEach(function (s) {
+    var li = el('li');
+    li.appendChild(el('strong', '', s.problem));
+    li.appendChild(document.createTextNode(': ' + s.fix));
+    $('stuck').appendChild(li);
   });
 
   $('vgo').addEventListener('click', function () {

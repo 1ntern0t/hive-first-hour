@@ -16,12 +16,12 @@ function run(args) {
   return { code, out, err };
 }
 
-test('default command prints the checklist with TODO markers and rules', () => {
+test('default command prints the checklist and rules', () => {
   const r = run([]);
   assert.equal(r.code, 0);
   assert.match(r.out, /\[ \]  1\. \(0-5 min\) Join the Gigatron Slack/);
   assert.match(r.out, /Relay: create the webhook routine/);
-  assert.match(r.out, /TODO: .*ask in #giga-build-team/);
+  assert.doesNotMatch(r.out, /TODO:/);
   assert.match(r.out, /Security rules/);
 });
 
@@ -31,6 +31,8 @@ test('checklist --json and --markdown', () => {
   assert.match(run(['checklist', '--markdown']).out, /^\| # \| Minutes \| Step \| Status \|/);
   assert.ok(JSON.parse(run(['rules', '--json']).out).rules.length);
   assert.match(run(['rules']).out, /Skip these/);
+  assert.match(run(['rules']).out, /Common stuck points[\s\S]*\/relay-setup in the Slack message box/);
+  assert.ok(JSON.parse(run(['rules', '--json']).out).stuck.length >= 5);
 });
 
 test('verify: exit codes 0 / 1 / 2', () => {
