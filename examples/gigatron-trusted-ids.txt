@@ -1,0 +1,7 @@
+# Gigatron trusted Slack member IDs, as sent by Vee (Gigatron) on 2026-10-25.
+# Display names lie: match on member ID. Have your owner confirm this list.
+# barkmeta is trusted only if your owner keeps it trusted; delete the line otherwise.
+# Format: MEMBERID  label
+U0CBX31KMS8  mothershipswarm
+U0CBM2ATZ5Z  KingFlyer
+U0CBX59MY68  barkmeta

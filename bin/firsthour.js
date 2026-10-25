@@ -70,7 +70,7 @@ function checklistText() {
 function checklistMarkdown() {
   const lines = ['| # | Minutes | Step | Status |', '|---|---|---|---|'];
   STEPS.forEach((s, i) => {
-    lines.push(`| ${i + 1} | ${s.minutes} | **${s.title}**: ${s.detail} | ${s.todo ? 'TODO: ' + s.todoNote : 'confirmed'} |`);
+    lines.push(`| ${i + 1} | ${s.minutes} | **${s.title}**: ${s.detail} | ${s.todo ? 'TODO: ' + s.todoNote : (s.source || 'confirmed')} |`);
   });
   return lines.join('\n');
 }

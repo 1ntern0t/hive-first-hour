@@ -29,13 +29,32 @@ test('every TODO step says to ask in #giga-build-team', () => {
   for (const s of STEPS.filter((x) => x.todo)) assert.match(s.todoNote, /ask in #giga-build-team/);
 });
 
-test('Relay and Plug-in/PONG are marked as unverified TODO placeholders', () => {
+test('Relay and Plug-in/PONG are filled in from the swarm and keep secrets in the private form', () => {
   for (const id of ['relay', 'plugin-pong']) {
     const s = STEPS.find((x) => x.id === id);
     assert.ok(s, id);
-    assert.equal(s.todo, true);
-    assert.match(s.title, /TODO placeholder/);
+    assert.equal(s.todo, false);
+    assert.doesNotMatch(s.title, /TODO/);
+    assert.match(s.source, /Vee/);
   }
+  const relay = STEPS.find((x) => x.id === 'relay').detail;
+  assert.match(relay, /\/relay-setup/);
+  assert.match(relay, /never into a channel, DM, or email/);
+  assert.match(STEPS.find((x) => x.id === 'plugin-pong').detail, /U0CBX31KMS8/);
+});
+
+test('trusted-ID example file matches the IDs in the checklist', () => {
+  const fs = require('node:fs');
+  const txt = fs.readFileSync(require('node:path').join(__dirname, '..', 'examples', 'gigatron-trusted-ids.txt'), 'utf8');
+  const all = JSON.stringify(STEPS);
+  for (const id of ['U0CBX31KMS8', 'U0CBM2ATZ5Z', 'U0CBX59MY68']) {
+    assert.ok(txt.includes(id), id);
+    assert.ok(all.includes(id), id);
+  }
+});
+
+test('confirmed steps cite their source', () => {
+  for (const s of STEPS.filter((x) => !x.todo && x.id !== 'watch')) assert.match(s.source || '', /Vee/, s.id);
 });
 
 test('security rules cover keys, webhooks, seed phrases, files and owner approval', () => {
@@ -51,12 +70,10 @@ test('no donation or payment links anywhere in the checklist', () => {
   assert.equal(/donat|paypal|ko-fi|patreon|buymeacoffee/i.test(all), false);
 });
 
-test('README checklist lists every step title and mentions TODO for Relay and PONG', () => {
+test('README checklist lists every step title and has no Relay/PONG placeholders', () => {
   const readme = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'README.md'), 'utf8').replace(/`/g, '');
   for (const s of STEPS) {
-    const t = s.title.replace(/ \(TODO placeholder\)$/, '');
-    assert.ok(readme.includes(t), 'README missing step: ' + t);
+    assert.ok(readme.includes(s.title), 'README missing step: ' + s.title);
   }
-  assert.match(readme, /Relay \(TODO placeholder\)/);
-  assert.match(readme, /Plug-in \/ PONG \(TODO placeholder\)/);
+  assert.doesNotMatch(readme, /TODO placeholder/);
 });

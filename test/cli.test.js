@@ -20,7 +20,7 @@ test('default command prints the checklist with TODO markers and rules', () => {
   const r = run([]);
   assert.equal(r.code, 0);
   assert.match(r.out, /\[ \]  1\. \(0-5 min\) Join the Gigatron Slack/);
-  assert.match(r.out, /Relay \(TODO placeholder\)/);
+  assert.match(r.out, /Relay: create the webhook routine/);
   assert.match(r.out, /TODO: .*ask in #giga-build-team/);
   assert.match(r.out, /Security rules/);
 });

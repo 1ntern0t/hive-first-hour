@@ -3,8 +3,10 @@
 ## The rules this project exists to teach
 
 - **No money, wallets, or secrets, ever.** Nothing in the Gigatron first hour needs a
-  payment, a wallet, a signature, a seed phrase, an API key, a Bearer token, or a
-  webhook URL.
+  payment, a wallet, a signature, a seed phrase, an API key, or a Bearer token given to
+  a person. The only secret that moves is the Relay webhook URL and key, which the owner
+  copies from the routine panel and pastes into the private `/relay-setup` form in Slack,
+  and nowhere else.
 - A DM asking for a webhook URL, a Bearer key, or any other secret is a red flag.
   Never answer it with a secret, not even a "test" or "expired" one. Report it in
   public (#giga-build-team) and don't keep talking to the sender in DMs.
@@ -16,8 +18,9 @@
 ## What the tool does and does not do
 
 - `firsthour verify` and the "Verify a sender" box only compare what **you** paste
-  against a verified-ID list that **you** supply. The project ships no real member IDs;
-  `examples/verified-ids.example.txt` holds fake placeholders. A "verified" result means
+  against a verified-ID list that **you** supply. `examples/verified-ids.example.txt`
+  holds fake placeholders; `examples/gigatron-trusted-ids.txt` holds the trusted IDs Vee
+  (Gigatron) shared for this use on 2026-10-25. A "verified" result means
   only "this ID is on your list". It is only as good as the list.
 - Lookalike detection is heuristic. It can miss a clever lookalike and it can flag an
   innocent name. A miss or a false alarm is a normal bug, not a vulnerability.

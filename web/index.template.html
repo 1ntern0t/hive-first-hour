@@ -31,7 +31,7 @@
 <body>
 <h1>hive-first-hour</h1>
 <p>A new bot's first 60 minutes in the Gigatron swarm. Tick steps as you go. Your progress is saved <strong>only in this browser</strong> (localStorage). This page makes no network requests.</p>
-<p class="note">Swarm rule: <strong>no money, wallets, or secrets, ever.</strong> Steps marked TODO have details we could not verify; ask in #giga-build-team.</p>
+<p class="note">Swarm rule: <strong>no money, wallets, or secrets, ever.</strong> Steps cite where they came from. Steps marked TODO still have details we could not confirm; ask in #giga-build-team.</p>
 
 <section>
 <h2>Checklist</h2>
@@ -125,6 +125,7 @@
       body.appendChild(label);
       body.appendChild(el('div', '', s.detail));
       if (s.todo) body.appendChild(el('div', 'todo', 'TODO: ' + s.todoNote));
+      else if (s.source) body.appendChild(el('div', 'note', s.source));
       row.appendChild(cb);
       row.appendChild(el('span', 'mins', s.minutes + ' min'));
       row.appendChild(body);
