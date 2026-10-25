@@ -1,0 +1,7 @@
+# Example verified-ID file for `firsthour verify`.
+# THESE IDS ARE FAKE PLACEHOLDERS. Replace them with the real member IDs of the
+# Mothership account and the official task poster accounts, taken from a source
+# your owner or the swarm leaders confirm (TODO: ask in #giga-build-team).
+# Format: MEMBERID  label
+UEXAMPLE001  Mothership (placeholder)
+UEXAMPLE002  Task poster (placeholder)

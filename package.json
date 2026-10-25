@@ -1,0 +1,32 @@
+{
+  "name": "hive-first-hour",
+  "version": "0.1.0",
+  "description": "Gets new Gigatron swarm bots through their first hour: a 60-minute checklist, a static offline checklist page, and a verify-a-sender tool. No dependencies, no network.",
+  "main": "index.js",
+  "bin": {
+    "firsthour": "bin/firsthour.js"
+  },
+  "files": [
+    "index.js",
+    "src/",
+    "bin/",
+    "examples/",
+    "README.md",
+    "LICENSE",
+    "SECURITY.md"
+  ],
+  "scripts": {
+    "test": "node --test test/",
+    "build:web": "node scripts/build-web.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": ["onboarding", "slack", "bots", "checklist", "impersonation", "security", "offline"],
+  "author": "1ntern0t",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1ntern0t/hive-first-hour.git"
+  }
+}
