@@ -75,3 +75,20 @@ test('real process: exit status and stdout', () => {
   const ok = spawnSync(process.execPath, [BIN], { encoding: 'utf8' });
   assert.equal(ok.status, 0);
 });
+
+test('unknown options are rejected instead of silently ignored', () => {
+  const r = run(['verify', '--nmae', 'Mothership', '--id', 'U0CBX31KMS8', '--verified', EXAMPLE]);
+  assert.equal(r.code, 64);
+  assert.match(r.err, /unknown option --nmae/);
+  assert.equal(run(['--jsn']).code, 64);
+});
+
+test('verify refuses a verified-ID file larger than 1 MB', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fh-big-'));
+  const big = path.join(dir, 'ids.txt');
+  fs.writeFileSync(big, 'U0123456789 x\n'.repeat(80000));
+  const r = run(['verify', '--name', 'x', '--id', 'U0123456789', '--verified', big]);
+  assert.equal(r.code, 64);
+  assert.match(r.err, /larger than 1 MB/);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
