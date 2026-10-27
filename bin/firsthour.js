@@ -25,6 +25,12 @@ Exit codes for verify: 0 verified, 1 not on the list, 2 suspicious or invalid,
 64 usage error.
 `;
 
+const BOOLEAN_FLAGS = new Set(['json', 'markdown', 'help', 'version']);
+// A typo such as --nmae used to be taken silently as an unknown option.
+const KNOWN_FLAGS = new Set([...BOOLEAN_FLAGS, 'name', 'id', 'verified', 'protected']);
+// Verified-ID lists are small; refuse anything big instead of reading it all into memory.
+const MAX_VERIFIED_FILE_BYTES = 1024 * 1024;
+
 function parseArgs(argv) {
   const out = { _: [], flags: {} };
   for (let i = 0; i < argv.length; i++) {
@@ -32,7 +38,8 @@ function parseArgs(argv) {
     if (a.startsWith('--')) {
       const eq = a.indexOf('=');
       const key = eq === -1 ? a.slice(2) : a.slice(2, eq);
-      if (['json', 'markdown', 'help', 'version'].includes(key)) {
+      if (!KNOWN_FLAGS.has(key)) throw usage('unknown option --' + key);
+      if (BOOLEAN_FLAGS.has(key)) {
         out.flags[key] = true;
       } else if (eq !== -1) {
         out.flags[key] = a.slice(eq + 1);
@@ -90,8 +97,11 @@ function verify(flags, io) {
   if (!flags.verified) throw usage('verify needs --verified <file>');
   let text;
   try {
-    text = fs.readFileSync(path.resolve(flags.verified), 'utf8');
+    const file = path.resolve(flags.verified);
+    if (fs.statSync(file).size > MAX_VERIFIED_FILE_BYTES) throw usage('verified-ID file is larger than 1 MB: ' + flags.verified);
+    text = fs.readFileSync(file, 'utf8');
   } catch (e) {
+    if (e.usage) throw e;
     throw usage('cannot read verified-ID file: ' + flags.verified);
   }
   let list;
