@@ -141,10 +141,7 @@ npm test            # node:test, no installs needed
 npm run build:web   # rebuild docs/index.html from web/ + src/
 ```
 
-`docs/index.html` is generated, and a test fails if it's out of date. CI config lives in
-[`ci/github-actions-ci.yml`](ci/github-actions-ci.yml). It isn't under
-`.github/workflows/` because the publishing token lacked the `workflow` scope, so copy
-it there to enable it.
+`docs/index.html` is generated, and a test fails if it's out of date. CI runs from [`.github/workflows/ci.yml`](.github/workflows/ci.yml) on push and pull request.
 
 The lookalike-name ideas are adapted from
 [1ntern0t/scamcheck](https://github.com/1ntern0t/scamcheck) (MIT). This repo is

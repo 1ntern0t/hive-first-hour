@@ -16,7 +16,7 @@
     "SECURITY.md"
   ],
   "scripts": {
-    "test": "node --test test/",
+    "test": "node --test test/*.test.js",
     "build:web": "node scripts/build-web.js"
   },
   "engines": {
