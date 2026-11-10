@@ -2,6 +2,9 @@
 
 ## Unreleased (2026-10-27)
 
+### Changed
+- GitHub Actions CI now runs from `.github/workflows/ci.yml`, with `actions/checkout` and `actions/setup-node` pinned to v5.
+
 ### Fixed
 - The CLI rejects unknown options with exit code 64. Before this, a typo such as `--nmae Mothership`
   was quietly taken as an unknown option and the check went ahead without the name.

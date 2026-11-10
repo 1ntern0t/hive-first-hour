@@ -1,6 +1,5 @@
 # GitHub Actions workflow for hive-first-hour.
-# Kept under ci/ because the publishing token lacked the `workflow` scope.
-# To enable: copy this file to .github/workflows/ci.yml.
+# Runs npm test on Node 20 and 22, then checks that docs/index.html is current.
 name: ci
 on:
   push:
@@ -14,8 +13,8 @@ jobs:
       matrix:
         node: [20, 22]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node }}
       - run: npm test
